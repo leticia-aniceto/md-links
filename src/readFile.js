@@ -15,15 +15,51 @@ const fs = require('fs');
 //     })
 // }
 
-const getFile = (pathFile) => { 
-    const encoding = 'utf-8' 
-    fs.readFile(pathFile, encoding, (error, text) => { 
-        if (error) {
-            console.log(err.message);
-        }
-        const regex = data.match(/\[([^\]]*)\]\((http[s]?[^)]*)/gm); 
-        console.log(chalk.green(text)) 
-    }) 
+// const getFile = (pathFile) => {
+//     return new Promise(function promiseResolve(resolve, reject) {
+//         fs.readFile(pathFile, 'utf-8', (error, text) => { 
+//             if (error) {
+//                 error = 'ERROR: Invalid file.';
+//                 return reject(err);
+//             } else {
+//                 const regex = data.match(/\[([^\[]+)\](\(http.*?\))/gm); 
+//                 console.log(chalk.green(text)) 
+
+//             }
+//         }) 
+//     }) 
+    
+// }
+
+function throwError(err) {
+    throw new Error(chalk.red(err.code, 'there is no file in this path')); 
 }
 
-console.log('oi');
+async function getFile (pathFile) {
+    try {
+        const text = await fs.promises.readFile(pathFile, 'utf8');
+        console.log(chalk.green(text));
+    } catch (err) {
+        throwError(err);
+    }
+}
+
+// const getFile = (pathFile) => {
+//     fs.promises
+//     .readFile(pathFile, 'utf8')
+//     .then((text) => console.log(text))
+//     .catch((err) => throwError(err))
+// }
+
+// const getFile = (pathFile) => {
+//     fs.readFile(pathFile, 'utf-8', (err, text) => { 
+//         if (err) {
+//             throwError(err); 
+//         }
+//         console.log(chalk.blueBright(text));
+//     }) 
+// }
+
+getFile('./', console.log(chalk.blueBright('success in get file')))
+
+
